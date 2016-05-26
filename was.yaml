@@ -23,21 +23,20 @@ parameters:
     constraints:
     - custom_constraint: nova.keypair
     
-  private_network:
+  network-id__for__patterns-service-dev-net:
     type: string
-    description: Private Network
-    label: Private network
-    default: private
-    constraints:
-    - custom_constraint: neutron.network
-    
-  public_network:
+    description: 'Generated to reference ''patterns-service-dev-net'' network.'
+    default: 'fbd19302-f247-4816-b53e-a664f3dc72c1'
+
+  subnet_id_46fcd6d7-017e-437b-9921-d7fb9f76a7f2:
     type: string
-    description: Public Network for floating IP
-    label: Public network
-    default: Public-Network
-    constraints:
-    - custom_constraint: neutron.network
+    description: 'Generated to reference subnet ''46fcd6d7-017e-437b-9921-d7fb9f76a7f2''.'
+    default: '46fcd6d7-017e-437b-9921-d7fb9f76a7f2'
+
+  public_network_id:
+    type: string
+    description: 'Generated for floating IP'
+    default: 'public_network_id'
     
   availability_zone:
     type: string
@@ -229,7 +228,7 @@ parameters:
 parameter_groups:
     - { label: 'Host Name Parameters', parameters: [was_vm_name] }
     - { label: 'Image Parameters', parameters: [flavor, key_name, availability_zone, image_id, virtuser_password, root_password, sw_repo_root] }
-    - { label: 'Network Parameters', parameters: [private_network, public_network] }
+    - { label: 'Network Parameters', parameters: [network-id__for__patterns-service-dev-net, subnet_id_46fcd6d7-017e-437b-9921-d7fb9f76a7f2, public_network_id] }
     - { label: 'Salt Parameters', parameters: [salt_master_address, salt_api_user, salt_api_pass] }
     - { label: 'WebSphere Parameters', parameters: [was_os_user, was_os_group, was_os_user_password, was_admin_username, was_admin_password, was_install_dir, was_profile_dir, im_install_dir, customer_log_dir_enabled, customer_log_dir, java7_enabled, was_fixpack, java_fixpack, sdk_64bit, was_profile_name, was_cell_name, was_node_name, was_server_name] }
     
@@ -253,7 +252,7 @@ resources:
     type: OS::Nova::Server
     properties:
       networks:
-          - port: { get_resource: was_standalone_port }
+          - port: { get_resource: rhel-7_2-2015-12-13__to__patterns-service-dev-net__port }
       name: { get_param:  was_vm_name }
       image: {get_param: image_id }
       flavor: { get_param: flavor }
@@ -263,16 +262,19 @@ resources:
       user_data_format: RAW
       user_data: {get_resource: was_standalone_init}
 
-  was_standalone_port__floating_ip:
+  rhel-7_2-2015-12-13__to__patterns-service-dev-net__port__floating_ip:
     type: OS::Neutron::FloatingIP
     properties:
-      floating_network: { get_param: public_network}
-      port_id: { get_resource: was_standalone_port }
+      floating_network_id: { get_param: public_network_id }
+      port_id: { get_resource: rhel-7_2-2015-12-13__to__patterns-service-dev-net__port }
 
-  was_standalone_port:
+  rhel-7_2-2015-12-13__to__patterns-service-dev-net__port:
     type: OS::Neutron::Port
     properties:
-      network: { get_param: private_network }   
+      network_id: { get_param: network-id__for__patterns-service-dev-net }
+      replacement_policy: AUTO   #TODO remove this if using HEAT version Icehouse!
+      fixed_ips:
+        - subnet: { get_param: subnet_id_46fcd6d7-017e-437b-9921-d7fb9f76a7f2 }
  
   was_standalone_init:
     type: OS::Heat::MultipartMime
