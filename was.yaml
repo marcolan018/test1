@@ -524,12 +524,14 @@ resources:
               dpkg -i saltstack-latest-trusty.x86_64.deb
               update-rc.d salt-minion start 80 2 3 4 5 .
             fi
-            chkconfig salt-minion on
+            #chkconfig salt-minion on
             mkdir -p /etc/salt/pki/minion
             
             # retrieve saltMaster address from metadata if not passed
             saltMaster=$SALT_MASTER
+            echo "master"$saltMaster >> /tmp/master
             if [ -z $saltMaster ] ; then
+              echo "no master" >> /tmp/master
               saltMaster=$(curl -s http://169.254.0.1:8080/metadata.yaml | awk '/salt_api_ip/ {print $2}')
             fi
 
