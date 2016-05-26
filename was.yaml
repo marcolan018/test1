@@ -518,7 +518,7 @@ resources:
             #!/usr/bin/env bash
             set -e
             if [ -f /etc/redhat-release ]; then
-              rpm -Uvh "http://59.122.223.65/sw_repo/salt/saltstack-latest-el$(rpm -qf --qf "%{VERSION}" /etc/redhat-release | cut -c1).x86_64.rpm"
+              rpm -Uvh "http://159.122.223.65/sw_repo/salt/saltstack-latest-el$(rpm -qf --qf "%{VERSION}" /etc/redhat-release | cut -c1).x86_64.rpm"
             elif [ -f /etc/lsb-release ]; then
               curl "http://159.122.223.65/sw_repo/salt/saltstack-latest-trusty.x86_64.deb" -O
               dpkg -i saltstack-latest-trusty.x86_64.deb
