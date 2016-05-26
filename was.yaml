@@ -94,7 +94,6 @@ parameters:
     description: Password for connecting to Salt API, leave blank to use metadata.yam
     label: Salt api password
     hidden: True
-    default: 'pM0dularc'
  
 ############################
 # Server names
