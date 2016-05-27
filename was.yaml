@@ -594,5 +594,5 @@ outputs:
     value: 
       str_replace:
         params:
-          $IPADDR: { get_attr: [was_standalone_port__floating_ip, floating_ip_address] }
+          $IPADDR: { get_attr: [rhel-7_2-2015-12-13__to__patterns-service-dev-net__port__floating_ip, floating_ip_address] }
         template: https://$IPADDR:9043/ibm/console            
