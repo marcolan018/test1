@@ -300,7 +300,7 @@ resources:
             echo "$server_ip $server_hostname.$DOMAIN $server_hostname" >> /etc/hosts
           params:
             $server_hostname: { get_param: was_vm_name }
-            $server_ip: { get_attr: [was_standalone_port,fixed_ips, 0, ip_address] }
+            $server_ip: { get_attr: [rhel-7_2-2015-12-13__to__patterns-service-dev-net__port,fixed_ips, 0, ip_address] }
             $DOMAIN: novalocal
             
   assign_roles:
