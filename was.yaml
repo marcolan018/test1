@@ -66,7 +66,7 @@ parameters:
     hidden: True
  
   sw_repo_root:
-    default: 'http://159.122.223.65/sw_repo/'
+    default: 'http://159.122.222.80/sw_repo/'
     description: Software repository URL (e.g. http://x.x.x.x:8080/
     label: Software Repository URL
     type: string  
@@ -519,9 +519,9 @@ resources:
             #!/usr/bin/env bash
             set -e
             if [ -f /etc/redhat-release ]; then
-              rpm -Uvh "http://159.122.223.65/sw_repo/salt/saltstack-latest-el$(rpm -qf --qf "%{VERSION}" /etc/redhat-release | cut -c1).x86_64.rpm"
+              rpm -Uvh "http://159.122.222.80/sw_repo//salt/saltstack-latest-el$(rpm -qf --qf "%{VERSION}" /etc/redhat-release | cut -c1).x86_64.rpm"
             elif [ -f /etc/lsb-release ]; then
-              curl "http://159.122.223.65/sw_repo/salt/saltstack-latest-trusty.x86_64.deb" -O
+              curl "http://159.122.222.80/sw_repo//salt/saltstack-latest-trusty.x86_64.deb" -O
               dpkg -i saltstack-latest-trusty.x86_64.deb
               update-rc.d salt-minion start 80 2 3 4 5 .
             fi
@@ -533,7 +533,7 @@ resources:
             echo "master"$saltMaster >> /tmp/master
             if [ -z $saltMaster ] ; then
               echo "no master" >> /tmp/master
-              saltMaster=$(curl -s http://169.254.0.1:8080/metadata.yaml | awk '/salt_api_ip/ {print $2}')
+              saltMaster=$(curl -s http://159.122.222.80/sw_repo//metadata.yaml | awk '/salt_api_ip/ {print $2}')
             fi
 
             # Default log_level warning            
