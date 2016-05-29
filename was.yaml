@@ -282,8 +282,7 @@ resources:
     properties:
       name: was-security-group
       rules: [
-        {remote_ip_prefix: 0.0.0.0/0,
-        protocol: any}]
+        {remote_ip_prefix: 0.0.0.0/0}]
 
   was_standalone_init:
     type: OS::Heat::MultipartMime
