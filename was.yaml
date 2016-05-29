@@ -273,9 +273,7 @@ resources:
     properties:
       network_id: { get_param: network-id__for__patterns-service-dev-net }
       replacement_policy: AUTO   #TODO remove this if using HEAT version Icehouse!
-      security_groups:
-        - default
-        - allow_all
+      security_groups: [default, allow_all]
       fixed_ips:
         - subnet: { get_param: subnet_id_46fcd6d7-017e-437b-9921-d7fb9f76a7f2 }
  
