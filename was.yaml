@@ -275,7 +275,16 @@ resources:
       replacement_policy: AUTO   #TODO remove this if using HEAT version Icehouse!
       fixed_ips:
         - subnet: { get_param: subnet_id_46fcd6d7-017e-437b-9921-d7fb9f76a7f2 }
+      security_groups: [{ get_resource: server_security_group }]
  
+  server_security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      name: was-security-group
+      rules: [
+        {remote_ip_prefix: 0.0.0.0/0,
+        protocol: any}]
+
   was_standalone_init:
     type: OS::Heat::MultipartMime
     properties:
