@@ -37,7 +37,12 @@ parameters:
     type: string
     description: 'Generated for floating IP'
     default: 'public_network_id'
-    
+  
+  security_group:
+    type: string
+    description: 'Name of the security group'
+    default: 'default'
+
   availability_zone:
     type: string
     description: 'Name of availability zone in which to create the instance'
@@ -228,7 +233,7 @@ parameters:
 parameter_groups:
     - { label: 'Host Name Parameters', parameters: [was_vm_name] }
     - { label: 'Image Parameters', parameters: [flavor, key_name, availability_zone, image_id, virtuser_password, root_password, sw_repo_root] }
-    - { label: 'Network Parameters', parameters: [network-id__for__patterns-service-dev-net, subnet_id_46fcd6d7-017e-437b-9921-d7fb9f76a7f2, public_network_id] }
+    - { label: 'Network Parameters', parameters: [network-id__for__patterns-service-dev-net, subnet_id_46fcd6d7-017e-437b-9921-d7fb9f76a7f2, public_network_id, security_group] }
     - { label: 'Salt Parameters', parameters: [salt_master_address, salt_api_user, salt_api_pass] }
     - { label: 'WebSphere Parameters', parameters: [was_os_user, was_os_group, was_os_user_password, was_admin_username, was_admin_password, was_install_dir, was_profile_dir, im_install_dir, customer_log_dir_enabled, customer_log_dir, java7_enabled, was_fixpack, java_fixpack, sdk_64bit, was_profile_name, was_cell_name, was_node_name, was_server_name] }
     
@@ -275,14 +280,7 @@ resources:
       replacement_policy: AUTO   #TODO remove this if using HEAT version Icehouse!
       fixed_ips:
         - subnet: { get_param: subnet_id_46fcd6d7-017e-437b-9921-d7fb9f76a7f2 }
-#      security_groups: [{ get_resource: server_security_group }]
- 
-  server_security_group:
-    type: OS::Neutron::SecurityGroup
-    properties:
-      name: was-security-group
-      rules: [
-        {remote_ip_prefix: 0.0.0.0/0}]
+      security_group_ip: [{ get_param: server_group }]
 
   was_standalone_init:
     type: OS::Heat::MultipartMime
