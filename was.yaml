@@ -280,7 +280,7 @@ resources:
       replacement_policy: AUTO   #TODO remove this if using HEAT version Icehouse!
       fixed_ips:
         - subnet: { get_param: subnet_id_46fcd6d7-017e-437b-9921-d7fb9f76a7f2 }
-      security_group_ip: [{ get_param: server_group }]
+      security_group_id: [{ get_param: server_group }]
 
   was_standalone_init:
     type: OS::Heat::MultipartMime
