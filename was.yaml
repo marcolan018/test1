@@ -83,20 +83,24 @@ parameters:
 
   salt_master_address:
     type: string
-    description: Hostname/IP address of the salt-master, leave blank to use metadata.yaml 
+    description: Hostname/IP address of the salt-master 
     label: Saltmaster address
-    default: '134.168.48.59'
     
   salt_api_user:
     type: string
-    description: The user connecting to Salt API, leave blank to use metadata.yaml
+    description: The user connecting to Salt API
     label: Salt api user
-    default: 'saltauth'
 
   salt_api_pass:
     type: string
-    description: Password for connecting to Salt API, leave blank to use metadata.yam
+    description: Password for connecting to Salt API
     label: Salt api password
+    hidden: True
+
+  salt_api_token:
+    type: string
+    description: Security token for connecting to Salt API
+    label: Salt api token
     hidden: True
  
 ############################
@@ -537,6 +541,8 @@ resources:
             # retrieve saltMaster address from metadata if not passed
             saltMaster=$SALT_MASTER
             echo "master"$saltMaster >> /tmp/master
+            token=$SALT_API_TOKEN
+            echo "token"$token >> /tmp/master
             if [ -z $saltMaster ] ; then
               echo "no master" >> /tmp/master
               saltMaster=$(curl -s http://159.122.222.80/sw_repo//metadata.yaml | awk '/salt_api_ip/ {print $2}')
@@ -564,6 +570,7 @@ resources:
             $SALT_API_PASS: { get_param: salt_api_pass}
             $STACK_ID: { get_param: "OS::stack_id" }
             $SALT_MASTER: { get_param: salt_master_address }
+            $SALT_API_TOKEN: { get_param: salt_api_token }
 
   setup_ssh:
     type: "OS::Heat::SoftwareConfig"
