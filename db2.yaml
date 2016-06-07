@@ -476,5 +476,5 @@ outputs:
     value:
       str_replace:
         params:
-          $IPADDR: { get_attr: [db2_port__floating_ip, floating_ip_address] }
+          $IPADDR: { get_attr: [rhel-7_2-2015-12-13__to__patterns-service-dev-net__port__floating_ip, floating_ip_address] }
         template: Server IP $IPADDR
